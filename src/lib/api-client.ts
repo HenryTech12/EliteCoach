@@ -108,7 +108,7 @@ export function buildNotificationPayload({
     to,
     subject,
     body,
-    channel = "IN_APP",
+    channel = "email",
 }: {
     to?: string | null;
     subject: string;
