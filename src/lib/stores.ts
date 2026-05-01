@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { persist, createJSONStorage } from "zustand/middleware";
 import { clearAuth, writeAuth } from "@/lib/api-client";
 
 export interface AuthUser {
@@ -94,19 +94,27 @@ interface SessionState {
   clearSession: () => void;
 }
 
-export const useSessionStore = create<SessionState>((set) => ({
-  currentSessionId: null,
-  courseId: null,
-  subjectId: null,
-  messages: [],
-  setSession: ({ sessionId, courseId, subjectId }) =>
-    set({ currentSessionId: sessionId, courseId, subjectId, messages: [] }),
-  addMessage: (m) => set((s) => ({ messages: [...s.messages, m] })),
-  clearSession: () =>
-    set({
+export const useSessionStore = create<SessionState>()(
+  persist(
+    (set) => ({
       currentSessionId: null,
       courseId: null,
       subjectId: null,
       messages: [],
+      setSession: ({ sessionId, courseId, subjectId }) =>
+        set({ currentSessionId: sessionId, courseId, subjectId, messages: [] }),
+      addMessage: (m) => set((s) => ({ messages: [...s.messages, m] })),
+      clearSession: () =>
+        set({
+          currentSessionId: null,
+          courseId: null,
+          subjectId: null,
+          messages: [],
+        }),
     }),
-}));
+    {
+      name: "elitecoach.session",
+      storage: createJSONStorage(() => sessionStorage),
+    },
+  ),
+);

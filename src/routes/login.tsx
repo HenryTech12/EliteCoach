@@ -1,4 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { redirectIfLoggedIn } from "@/lib/auth-guard";
 import { useState, FormEvent } from "react";
 import { AuthLayout } from "@/components/AuthLayout";
 import {
@@ -22,6 +23,7 @@ function pickString(...values: unknown[]): string | null {
 }
 
 export const Route = createFileRoute("/login")({
+  beforeLoad: () => { redirectIfLoggedIn(); },
   head: () => ({
     meta: [
       { title: "Log in — EliteCoach" },

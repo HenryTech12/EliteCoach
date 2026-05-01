@@ -1,10 +1,12 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { redirectIfLoggedIn } from "@/lib/auth-guard";
 import { useState, FormEvent } from "react";
 import { AuthLayout } from "@/components/AuthLayout";
 import { identityApi, extractErrorMessage } from "@/lib/api-client";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/register")({
+  beforeLoad: () => { redirectIfLoggedIn(); },
   head: () => ({
     meta: [
       { title: "Sign up — EliteCoach" },

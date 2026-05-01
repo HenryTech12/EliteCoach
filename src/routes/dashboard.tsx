@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { requireAuth } from "@/lib/auth-guard";
 import { useEffect, useState } from "react";
 import { TopNav } from "@/components/TopNav";
 import { Footer } from "@/components/Footer";
@@ -15,6 +16,7 @@ import { EmptyState } from "@/components/EmptyState";
 import { ArrowRight, Sparkles } from "lucide-react";
 
 export const Route = createFileRoute("/dashboard")({
+    beforeLoad: () => { requireAuth(); },
     head: () => ({ meta: [{ title: "Dashboard — EliteCoach" }] }),
     component: DashboardPage,
 });

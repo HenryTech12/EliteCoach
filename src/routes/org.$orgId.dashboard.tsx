@@ -1,4 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { requireOrgAdmin } from "@/lib/auth-guard";
+import { useOrgStore } from "@/lib/stores";
 import { useEffect, useState } from "react";
 import { TopNav } from "@/components/TopNav";
 import { OrgTabs } from "@/components/OrgTabs";
@@ -17,6 +19,10 @@ interface OrgDashboard {
 }
 
 export const Route = createFileRoute("/org/$orgId/dashboard")({
+  beforeLoad: ({ params }) => {
+    requireOrgAdmin();
+    useOrgStore.getState().setOrg({ organizationId: params.orgId });
+  },
   head: () => ({ meta: [{ title: "Org dashboard — EliteCoach" }] }),
   component: OrgDashboardPage,
 });

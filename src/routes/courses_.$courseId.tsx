@@ -1,4 +1,5 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import { requireAuth } from "@/lib/auth-guard";
 import { useEffect, useState } from "react";
 import { TopNav } from "@/components/TopNav";
 import { Footer } from "@/components/Footer";
@@ -50,6 +51,7 @@ interface Module {
 }
 
 export const Route = createFileRoute("/courses_/$courseId")({
+    beforeLoad: () => { requireAuth(); },
     head: ({ params }) => ({
         meta: [
             { title: `Course — EliteCoach` },

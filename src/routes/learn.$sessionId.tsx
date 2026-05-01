@@ -1,4 +1,5 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import { requireAuth } from "@/lib/auth-guard";
 import { useEffect, useRef, useState } from "react";
 import {
     aiTutorApi,
@@ -36,6 +37,7 @@ interface Module {
 }
 
 export const Route = createFileRoute("/learn/$sessionId")({
+    beforeLoad: () => { requireAuth(); },
     head: () => ({ meta: [{ title: "Learning room — EliteCoach" }] }),
     component: LearningRoomPage,
 });

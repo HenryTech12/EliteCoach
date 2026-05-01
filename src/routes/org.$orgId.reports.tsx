@@ -1,4 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { requireOrgAdmin } from "@/lib/auth-guard";
+import { useOrgStore } from "@/lib/stores";
 import { useState } from "react";
 import { TopNav } from "@/components/TopNav";
 import { OrgTabs } from "@/components/OrgTabs";
@@ -7,6 +9,10 @@ import { toast } from "sonner";
 import { Download } from "lucide-react";
 
 export const Route = createFileRoute("/org/$orgId/reports")({
+  beforeLoad: ({ params }) => {
+    requireOrgAdmin();
+    useOrgStore.getState().setOrg({ organizationId: params.orgId });
+  },
   head: () => ({ meta: [{ title: "Org reports — EliteCoach" }] }),
   component: OrgReportsPage,
 });

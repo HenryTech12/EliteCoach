@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { requireTutor } from "@/lib/auth-guard";
 import { useEffect, useState } from "react";
 import { TopNav } from "@/components/TopNav";
 import { Footer } from "@/components/Footer";
@@ -21,6 +22,7 @@ interface Course {
 }
 
 export const Route = createFileRoute("/tutor/courses")({
+  beforeLoad: () => { requireTutor(); },
   head: () => ({ meta: [{ title: "Tutor CMS — EliteCoach" }] }),
   component: TutorCoursesPage,
 });

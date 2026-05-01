@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { requireAuth } from "@/lib/auth-guard";
 import { useEffect, useState } from "react";
 import { TopNav } from "@/components/TopNav";
 import { Footer } from "@/components/Footer";
@@ -14,6 +15,7 @@ import { type AuthUser, useAuthStore } from "@/lib/stores";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/profile")({
+  beforeLoad: () => { requireAuth(); },
   head: () => ({ meta: [{ title: "Profile & settings — EliteCoach" }] }),
   component: ProfilePage,
 });
@@ -21,7 +23,11 @@ export const Route = createFileRoute("/profile")({
 function ProfilePage() {
   const user = useAuthStore((s) => s.user);
   const setUser = useAuthStore((s) => s.setUser);
-  const [form, setForm] = useState({ firstName: "", lastName: "", email: "" });
+  const [form, setForm] = useState({
+    firstName: user?.firstName ?? "",
+    lastName: user?.lastName ?? "",
+    email: user?.email ?? "",
+  });
   const [prefs, setPrefs] = useState({ email: true, in_app: true });
   const [saving, setSaving] = useState(false);
   const profileEditingSupported = false;

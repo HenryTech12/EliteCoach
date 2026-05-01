@@ -1,4 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { requireAuth } from "@/lib/auth-guard";
 import { useEffect, useState } from "react";
 import {
     acsApi,
@@ -81,6 +82,7 @@ function parseQuestions(payload: unknown): Question[] {
 }
 
 export const Route = createFileRoute("/quiz/$courseId")({
+    beforeLoad: () => { requireAuth(); },
     head: () => ({ meta: [{ title: "Quiz — EliteCoach" }] }),
     validateSearch: (search: Record<string, unknown>) => ({
         level: (search.level as string) ?? "beginner",

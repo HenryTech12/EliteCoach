@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { requireAuth } from "@/lib/auth-guard";
 import { useEffect, useState } from "react";
 import { TopNav } from "@/components/TopNav";
 import { Footer } from "@/components/Footer";
@@ -30,6 +31,7 @@ interface LearningPath {
 }
 
 export const Route = createFileRoute("/learning-path")({
+    beforeLoad: () => { requireAuth(); },
     head: () => ({ meta: [{ title: "Learning path — EliteCoach" }] }),
     component: LearningPathPage,
 });
